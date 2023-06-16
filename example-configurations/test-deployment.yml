@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    version: '1'
+  annotations:
+    nimbus.mozilla.org/enabled: 'true'
+    nimbus.mozilla.org/env.app.id: pocket
+    nimbus.mozilla.org/env.app.name: pocket
+    nimbus.mozilla.org/env.channel: release
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      deploy: example
+  template:
+    metadata:
+      labels:
+        deploy: example
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80

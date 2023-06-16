@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nimbus-controller
+  namespace: nimbus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      controller: nimbus
+  template:
+    metadata:
+      labels:
+        controller: nimbus
+    spec:
+      serviceAccountName: nimbus
+      containers:
+        - name: nimbus-controller
+          image: nimbus-controller
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080

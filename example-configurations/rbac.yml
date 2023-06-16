@@ -1,0 +1,58 @@
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: nimbus
+  namespace: nimbus
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nimbus
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+    apiGroups:
+      - 'batch'
+    resources:
+      - pods
+      - pods/status
+  - verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - update
+    apiGroups:
+      - 'apps'
+    resources:
+      - deployments
+      - deployments/status
+      - replicasets
+      - replicasets/status
+      - statefulsets
+      - statefulsets/status
+  - apiGroups:
+      - events.k8s.io
+    resources:
+      - events
+    verbs:
+      - create
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nimbus
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nimbus
+subjects:
+  - kind: ServiceAccount
+    name: nimbus
+    namespace: nimbus
